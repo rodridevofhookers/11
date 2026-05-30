@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feliz Nosso Dia 11</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -27,23 +25,54 @@
             position: relative;
         }
 
-        /* Contador fixo */
         #contador-relacionamento {
             position: fixed;
             top: 15px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 77, 109, 0.12);
-            border: 2px solid #ff4d6d;
-            color: #ff4d6d;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #ffffff;
+            border: 3px solid #ff4d6d;
+            border-radius: 26px;
+            padding: 10px 16px;
             z-index: 9999;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2);
-            text-align: center;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.25);
+        }
+
+        .foto-casal {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 2px solid #ff4d6d;
+            background: #ffe5eb;
+            flex-shrink: 0;
+        }
+
+        .foto-casal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .contador-info {
+            color: #ff4d6d;
+            font-weight: 700;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        .titulo-contador {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        #tempoJuntos {
+            font-size: 0.9rem;
+            font-weight: 700;
         }
 
         .container {
@@ -51,7 +80,7 @@
             z-index: 10;
             width: 100%;
             max-width: 600px;
-            padding: 100px 20px 20px;
+            padding: 140px 20px 20px;
         }
 
         h1 {
@@ -59,6 +88,13 @@
             font-size: 4.5rem;
             color: #ff4d6d;
             margin-bottom: 40px;
+        }
+
+        #telaSurpresa h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
         .btn-abrir {
@@ -130,9 +166,32 @@
                 font-size: 3rem;
             }
 
+            #telaSurpresa h1 {
+                font-size: 2.5rem;
+            }
+
             #contador-relacionamento {
-                width: 90%;
-                font-size: 0.9rem;
+                width: 94%;
+                max-width: 420px;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .foto-casal {
+                width: 65px;
+                height: 65px;
+            }
+
+            .titulo-contador {
+                font-size: 0.85rem;
+            }
+
+            #tempoJuntos {
+                font-size: 0.75rem;
+            }
+
+            .container {
+                padding-top: 125px;
             }
         }
     </style>
@@ -142,7 +201,14 @@
     <canvas id="canvasFogos"></canvas>
 
     <div id="contador-relacionamento">
-        ❤️ Juntos há: <span id="tempoJuntos"></span>
+        <div class="foto-casal">
+            <img src="foto.jpg" alt="Nossa Foto">
+        </div>
+
+        <div class="contador-info">
+            <div class="titulo-contador">❤️ Juntos há:</div>
+            <div id="tempoJuntos"></div>
+        </div>
     </div>
 
     <div class="container">
@@ -163,7 +229,6 @@
     </div>
 
     <script>
-        // CONTADOR
         function atualizarContador() {
             const inicio = new Date(2022, 7, 11, 0, 0, 0);
             const agora = new Date();
@@ -173,21 +238,20 @@
             const segundos = Math.floor(diff / 1000) % 60;
             const minutos = Math.floor(diff / (1000 * 60)) % 60;
             const horas = Math.floor(diff / (1000 * 60 * 60)) % 24;
-
             const diasTotais = Math.floor(diff / (1000 * 60 * 60 * 24));
 
             const anos = Math.floor(diasTotais / 365.25);
             const dias = Math.floor(diasTotais - (anos * 365.25));
 
             document.getElementById("tempoJuntos").textContent =
-                `${anos} anos, ${dias} dias, ${horas}h ${minutos}m ${segundos}s`;
+                `${anos} anos • ${dias} dias • ${horas}h ${minutos}m ${segundos}s`;
         }
 
         atualizarContador();
         setInterval(atualizarContador, 1000);
 
-        // TROCA DE TELA
         let animandoFogos = false;
+        let intervaloFogos = null;
 
         function abrirSurpresa() {
             document.getElementById('telaInicial').style.display = 'none';
@@ -199,15 +263,16 @@
                 telaSurpresa.style.opacity = '1';
             }, 50);
 
-            animandoFogos = true;
-            loopFogos();
+            if (!animandoFogos) {
+                animandoFogos = true;
+                loopFogos();
 
-            setInterval(() => {
-                if (animandoFogos) criarFogo();
-            }, 800);
+                intervaloFogos = setInterval(() => {
+                    if (animandoFogos) criarFogo();
+                }, 800);
+            }
         }
 
-        // FOGOS DE ARTIFÍCIO
         const canvas = document.getElementById('canvasFogos');
         const ctx = canvas.getContext('2d');
 
@@ -240,12 +305,12 @@
                 const velocidade = Math.random() * 4 + 2;
 
                 particulas.push({
-                    x,
-                    y,
+                    x: x,
+                    y: y,
                     vx: Math.cos(angulo) * velocidade,
                     vy: Math.sin(angulo) * velocidade,
                     alfa: 1,
-                    cor,
+                    cor: cor,
                     tamanho: Math.random() * 2 + 1
                 });
             }
