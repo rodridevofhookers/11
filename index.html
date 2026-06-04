@@ -1,130 +1,366 @@
-<script>
-    function atualizarContador() {
-        const inicio = new Date(2022, 7, 11, 0, 0, 0);
-        const agora = new Date();
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Nosso Dia 11</title>
 
-        const diff = agora - inicio;
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-        const segundos = Math.floor(diff / 1000) % 60;
-        const minutos = Math.floor(diff / (1000 * 60)) % 60;
-        const horas = Math.floor(diff / (1000 * 60 * 60)) % 24;
-        const diasTotais = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-        const anos = Math.floor(diasTotais / 365.25);
-        const dias = Math.floor(diasTotais - (anos * 365.25));
-
-        document.getElementById("tempoJuntos").textContent =
-            `${anos} anos • ${dias} dias • ${horas}h ${minutos}m ${segundos}s`;
-    }
-
-    atualizarContador();
-    setInterval(atualizarContador, 1000);
-
-    let animandoFogos = false;
-    let intervaloFogos = null;
-
-    const canvas = document.getElementById('canvasFogos');
-    const ctx = canvas.getContext('2d');
-    let particulas = [];
-
-    function abrirSurpresa() {
-        document.getElementById('telaInicial').style.display = 'none';
-
-        const telaSurpresa = document.getElementById('telaSurpresa');
-        telaSurpresa.style.display = 'block';
-
-        const botoes = document.querySelectorAll('.btn-opcao');
-
-        botoes.forEach((botao, index) => {
-            botao.style.opacity = '0';
-            botao.style.transform = 'translateX(-180px)';
-            botao.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-
-            setTimeout(() => {
-                botao.style.opacity = '1';
-                botao.style.transform = 'translateX(0)';
-            }, 400 + index * 250);
-        });
-
-        setTimeout(() => {
-            telaSurpresa.style.opacity = '1';
-        }, 50);
-
-        if (!animandoFogos) {
-            animandoFogos = true;
-            loopFogos();
-
-            intervaloFogos = setInterval(() => {
-                if (animandoFogos) criarFogo();
-            }, 800);
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    }
 
-    function ajustarCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-
-    ajustarCanvas();
-    window.addEventListener('resize', ajustarCanvas);
-
-    function criarFogo() {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * (canvas.height * 0.6);
-
-        const cores = [
-            '#ff4d6d',
-            '#ff758f',
-            '#ff8fab',
-            '#ffb3c1',
-            '#ffccd5'
-        ];
-
-        const cor = cores[Math.floor(Math.random() * cores.length)];
-
-        for (let i = 0; i < 60; i++) {
-            const angulo = Math.random() * Math.PI * 2;
-            const velocidade = Math.random() * 4 + 2;
-
-            particulas.push({
-                x: x,
-                y: y,
-                vx: Math.cos(angulo) * velocidade,
-                vy: Math.sin(angulo) * velocidade,
-                alfa: 1,
-                cor: cor,
-                tamanho: Math.random() * 2 + 1
-            });
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            position: relative;
         }
-    }
 
-    function loopFogos() {
-        if (!animandoFogos) return;
+        #contador-relacionamento {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #ffffff;
+            border: 3px solid #ff4d6d;
+            border-radius: 26px;
+            padding: 10px 16px;
+            z-index: 9999;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.25);
+        }
 
-        requestAnimationFrame(loopFogos);
+        .foto-casal {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 2px solid #ff4d6d;
+            background: #ffe5eb;
+            flex-shrink: 0;
+        }
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        .foto-casal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
 
-        for (let i = particulas.length - 1; i >= 0; i--) {
-            const p = particulas[i];
+        .contador-info {
+            color: #ff4d6d;
+            font-weight: 700;
+            text-align: left;
+            line-height: 1.4;
+        }
 
-            p.x += p.vx;
-            p.y += p.vy;
-            p.vy += 0.04;
-            p.alfa -= 0.015;
+        .titulo-contador {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
 
-            if (p.alfa <= 0) {
-                particulas.splice(i, 1);
-                continue;
+        #tempoJuntos {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+            padding: 140px 20px 20px;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem;
+            color: #ff4d6d;
+            margin-bottom: 40px;
+        }
+
+        #telaSurpresa h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .btn-abrir {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            background-color: #ff4d6d;
+            border: none;
+            padding: 15px 45px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-abrir:hover {
+            background-color: #ff758f;
+            transform: scale(1.05);
+        }
+
+        #telaSurpresa {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .grid-botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+            align-items: center;
+        }
+
+        .btn-opcao {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            width: 80%;
+            max-width: 300px;
+            padding: 12px;
+            border: 2px solid #ff4d6d;
+            background-color: #ffffff;
+            color: #ff4d6d;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            opacity: 0;
+            transform: translateX(-180px);
+            transition: opacity 0.8s ease, transform 0.8s ease, background-color 0.2s, color 0.2s;
+        }
+
+        .btn-opcao.aparecer {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .btn-opcao:hover {
+            background-color: #ff4d6d;
+            color: #ffffff;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
             }
 
-            ctx.save();
-            ctx.globalAlpha = p.alfa;
-            ctx.fillStyle = p.cor;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.tamanho, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
+            #telaSurpresa h1 {
+                font-size: 2.5rem;
+            }
+
+            #contador-relacionamento {
+                width: 94%;
+                max-width: 420px;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .foto-casal {
+                width: 65px;
+                height: 65px;
+            }
+
+            .titulo-contador {
+                font-size: 0.85rem;
+            }
+
+            #tempoJuntos {
+                font-size: 0.75rem;
+            }
+
+            .container {
+                padding-top: 125px;
+            }
         }
-    }
-</script>
+    </style>
+</head>
+<body>
+
+    <canvas id="canvasFogos"></canvas>
+
+    <div id="contador-relacionamento">
+        <div class="foto-casal">
+            <img src="foto.jpg" alt="Nossa Foto">
+        </div>
+
+        <div class="contador-info">
+            <div class="titulo-contador">❤️ Juntos há:</div>
+            <div id="tempoJuntos"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="telaInicial">
+            <h1>Feliz nosso dia 11</h1>
+            <button class="btn-abrir" onclick="abrirSurpresa()">Abrir</button>
+        </div>
+
+        <div id="telaSurpresa">
+            <h1>SURPRESA!</h1>
+
+            <div class="grid-botoes">
+                <button class="btn-opcao">Nossa História ❤️</button>
+                <button class="btn-opcao">Nossos Momentos 📸</button>
+                <button class="btn-opcao">Uma Mensagem 💌</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function atualizarContador() {
+            const inicio = new Date(2022, 7, 11, 0, 0, 0);
+            const agora = new Date();
+
+            const diff = agora - inicio;
+
+            const segundos = Math.floor(diff / 1000) % 60;
+            const minutos = Math.floor(diff / (1000 * 60)) % 60;
+            const horas = Math.floor(diff / (1000 * 60 * 60)) % 24;
+            const diasTotais = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+            const anos = Math.floor(diasTotais / 365.25);
+            const dias = Math.floor(diasTotais - (anos * 365.25));
+
+            document.getElementById("tempoJuntos").textContent =
+                `${anos} anos • ${dias} dias • ${horas}h ${minutos}m ${segundos}s`;
+        }
+
+        atualizarContador();
+        setInterval(atualizarContador, 1000);
+
+        let animandoFogos = false;
+        let intervaloFogos = null;
+
+        function abrirSurpresa() {
+            document.getElementById('telaInicial').style.display = 'none';
+
+            const telaSurpresa = document.getElementById('telaSurpresa');
+            telaSurpresa.style.display = 'block';
+
+            setTimeout(() => {
+                telaSurpresa.style.opacity = '1';
+            }, 50);
+
+            const botoes = document.querySelectorAll('.btn-opcao');
+
+            botoes.forEach((botao, index) => {
+                setTimeout(() => {
+                    botao.classList.add('aparecer');
+                }, 400 + index * 250);
+            });
+
+            if (!animandoFogos) {
+                animandoFogos = true;
+                loopFogos();
+
+                intervaloFogos = setInterval(() => {
+                    if (animandoFogos) criarFogo();
+                }, 800);
+            }
+        }
+
+        const canvas = document.getElementById('canvasFogos');
+        const ctx = canvas.getContext('2d');
+
+        function ajustarCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        ajustarCanvas();
+        window.addEventListener('resize', ajustarCanvas);
+
+        let particulas = [];
+
+        function criarFogo() {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * (canvas.height * 0.6);
+
+            const cores = [
+                '#ff4d6d',
+                '#ff758f',
+                '#ff8fab',
+                '#ffb3c1',
+                '#ffccd5'
+            ];
+
+            const cor = cores[Math.floor(Math.random() * cores.length)];
+
+            for (let i = 0; i < 60; i++) {
+                const angulo = Math.random() * Math.PI * 2;
+                const velocidade = Math.random() * 4 + 2;
+
+                particulas.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angulo) * velocidade,
+                    vy: Math.sin(angulo) * velocidade,
+                    alfa: 1,
+                    cor: cor,
+                    tamanho: Math.random() * 2 + 1
+                });
+            }
+        }
+
+        function loopFogos() {
+            if (!animandoFogos) return;
+
+            requestAnimationFrame(loopFogos);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = particulas.length - 1; i >= 0; i--) {
+                const p = particulas[i];
+
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.04;
+                p.alfa -= 0.015;
+
+                if (p.alfa <= 0) {
+                    particulas.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.globalAlpha = p.alfa;
+                ctx.fillStyle = p.cor;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.tamanho, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+    </script>
+
+</body>
+</html>
