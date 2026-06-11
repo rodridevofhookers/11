@@ -158,6 +158,61 @@
             color: #ffffff;
         }
 
+        #mensagemEspecial {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.96);
+            z-index: 10000;
+            overflow-y: auto;
+            padding: 30px 20px;
+        }
+
+        .caixa-mensagem {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 3px solid #ff4d6d;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.25);
+            text-align: center;
+        }
+
+        .imagem-mensagem {
+            width: 100%;
+            max-width: 360px;
+            border-radius: 22px;
+            border: 3px solid #ff4d6d;
+            margin-bottom: 22px;
+            object-fit: cover;
+        }
+
+        .texto-mensagem {
+            color: #333333;
+            font-size: 1rem;
+            line-height: 1.8;
+            text-align: left;
+            white-space: pre-line;
+        }
+
+        .btn-fechar {
+            margin-top: 25px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            background-color: #ff4d6d;
+            color: #ffffff;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-fechar:hover {
+            background-color: #ff758f;
+        }
+
         canvas {
             position: absolute;
             top: 0;
@@ -200,6 +255,14 @@
             .container {
                 padding-top: 125px;
             }
+
+            .caixa-mensagem {
+                padding: 18px;
+            }
+
+            .texto-mensagem {
+                font-size: 0.92rem;
+            }
         }
     </style>
 </head>
@@ -230,8 +293,18 @@
             <div class="grid-botoes">
                 <button class="btn-opcao">Dia Mais Importante ❤️</button>
                 <button class="btn-opcao">Melhor Dia ✨</button>
-                <button class="btn-opcao">...</button>
+                <button class="btn-opcao" onclick="abrirMensagem()">...</button>
             </div>
+        </div>
+    </div>
+
+    <div id="mensagemEspecial">
+        <div class="caixa-mensagem">
+            <img class="imagem-mensagem" src="foto.jpg2" alt="Nossa foto especial">
+
+            <p class="texto-mensagem">eu sei que você pensa que eu não te amo o tanto quanto antes, ou o tanto que você me ama, mas isso está muito longe da verdade, eu te amo muito garota, com todas as forças que me restam e as forças que eu invento pra parecer forte. Na real eu acho que só tive que amadurecer rápido demais de um dia pro outro, em uma semana eu era um inútil despreocupado com a vida, com a única responsabilidade sendo limpar o quintal e a louça, e do nada, virar um homem de casa, o seu menino, ligando pra tudo, problemas em trabalhos diferentes, várias horas em ônibus pra chegar em casa depois dos pés estarem latejando de tão doloridos. Não pense que eu não gosto de estar contigo ou algo parecido, tem vez que eu só preciso ficar sozinho, jogar um pouco, tirar toda essa energia pesada sabe? eu odeio tratar você mal, do mesmo jeito que eu sei que você odeia, mas eu nem percebo as vezes, só falo e me desculpo depois, mas isso não tira o fato de na minha mente eu ser um bosta por ter feito isso. Esse esforço pra esse site não é nada perto do frio da barriga que eu sinto quando sei que vamos acordar juntos e pedir algo pra comer mais tarde, da sensação que é saber que temos momentos só nossos, da felicidade que eu sinto por ter feito você jogar comigo… Eu te amo mais do que tudo, eu vou me casar com você, e se não for com você eu não vou querer com ninguém, de presente de dia dos namorados, eu quero que você perdoe meus vacilos, que não são poucos, quero que você fique comigo pra sempre, porque eu quero falar que te amo pro resto da minha vida.</p>
+
+            <button class="btn-fechar" onclick="fecharMensagem()">Fechar</button>
         </div>
     </div>
 
@@ -286,6 +359,14 @@
                     if (animandoFogos) criarFogo();
                 }, 800);
             }
+        }
+
+        function abrirMensagem() {
+            document.getElementById('mensagemEspecial').style.display = 'block';
+        }
+
+        function fecharMensagem() {
+            document.getElementById('mensagemEspecial').style.display = 'none';
         }
 
         const canvas = document.getElementById('canvasFogos');
