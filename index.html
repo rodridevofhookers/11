@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feliz Nosso Dia 11</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@500;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -132,33 +132,48 @@
         }
 
         .btn-opcao {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
             width: 80%;
             max-width: 300px;
-            padding: 12px;
+            padding: 13px;
             border: 2px solid #ff4d6d;
             background-color: #ffffff;
             color: #ff4d6d;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.45rem;
             opacity: 0;
             transform: translateX(-180px);
-            transition: opacity 0.8s ease, transform 0.8s ease, background-color 0.2s, color 0.2s;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 8px rgba(255, 77, 109, 0.18);
+            transition: opacity 0.8s ease, transform 0.8s ease, background-color 0.2s, color 0.2s, box-shadow 0.3s;
         }
 
         .btn-opcao.aparecer {
             opacity: 1;
             transform: translateX(0);
+            animation: brilhoDiscreto 2.8s ease-in-out infinite;
         }
 
         .btn-opcao:hover {
             background-color: #ff4d6d;
             color: #ffffff;
+            box-shadow: 0 8px 22px rgba(255, 77, 109, 0.28);
+        }
+
+        @keyframes brilhoDiscreto {
+            0%, 100% {
+                box-shadow: 0 0 0 rgba(255, 77, 109, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 14px rgba(255, 77, 109, 0.22);
+            }
         }
 
         #telaCasemiro,
+        #telaMelhorDia,
         #mensagemEspecial {
             display: none;
             position: fixed;
@@ -185,8 +200,9 @@
             max-width: 360px;
             border-radius: 22px;
             border: 3px solid #ff4d6d;
-            margin-bottom: 22px;
+            margin: 22px auto;
             object-fit: cover;
+            display: block;
         }
 
         .texto-mensagem {
@@ -199,7 +215,7 @@
 
         .btn-fechar {
             margin-top: 25px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Dancing Script', cursive;
             font-weight: 700;
             background-color: #ff4d6d;
             color: #ffffff;
@@ -207,11 +223,37 @@
             padding: 12px 32px;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.35rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 18px rgba(255, 77, 109, 0.25);
+            transition: transform 0.2s, background-color 0.2s;
         }
 
         .btn-fechar:hover {
             background-color: #ff758f;
+            transform: scale(1.04);
+        }
+
+        .flor-roxa {
+            position: fixed;
+            top: -40px;
+            color: #9b5de5;
+            font-size: 24px;
+            z-index: 10001;
+            pointer-events: none;
+            animation: cairFlor linear forwards;
+        }
+
+        @keyframes cairFlor {
+            0% {
+                transform: translateY(-40px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         canvas {
@@ -264,6 +306,10 @@
             .texto-mensagem {
                 font-size: 0.92rem;
             }
+
+            .btn-opcao {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
@@ -293,7 +339,7 @@
 
             <div class="grid-botoes">
                 <button class="btn-opcao" onclick="abrirCasemiro()">Dia Mais Importante ❤️</button>
-                <button class="btn-opcao">Melhor Dia ✨</button>
+                <button class="btn-opcao" onclick="abrirMelhorDia()">Melhor Dia ✨</button>
                 <button class="btn-opcao" onclick="abrirMensagem()">...</button>
             </div>
         </div>
@@ -301,11 +347,35 @@
 
     <div id="telaCasemiro">
         <div class="caixa-mensagem">
-            <img class="imagem-mensagem" src="casemiro-brasil-x-suiça.gif" alt="Casemiro">
+            <p class="texto-mensagem">
+Aqui, eu quis colocar algo que foi o início de tudo, acho que por contexto diferente, foi a primeira vez que eu fiquei feliz por outro motivo, com certeza uma das maiores felicidades que já senti da minha vida, como ta escrito, é o dia mais importante pra mim, e quem diria que seria depois disso que tudo iria acontecer de fato entre a gente…
+            </p>
 
-            <!-- ESCREVA AQUI O TEXTO DO BOTÃO 1 DEPOIS -->
+            <button class="btn-fechar" onclick="mostrarGol()">Descobrir qual foi o momento ❤️</button>
+
+            <div id="golCasemiro" style="display:none; margin-top:25px;">
+                <img class="imagem-mensagem" src="casemiro-brasil-x-suiça.gif" alt="Casemiro">
+            </div>
 
             <button class="btn-fechar" onclick="fecharCasemiro()">Fechar</button>
+        </div>
+    </div>
+
+    <div id="telaMelhorDia">
+        <div class="caixa-mensagem">
+            <p class="texto-mensagem">
+Quando a gente briga, ou ficamos longe um do outro, essa é a lembrança que faz eu me acalmar, esse dia foi muito especial pra mim, mais do que você pensa, não foi só um “date”, foi a primeira vez que eu saí de verdade, que eu estive contigo pra valer, a primeira cuidando de você na rua, te acompanhando, andando de mãos dadas, tirar fotos de óculos engraçado KKKKKKKKK, foi a primeira vez que eu comi lanche sem estar com a minha família também, foi muito especial por tudo, essas fotos me tiram sorrisos bem sinceros, me dá um conforto por dentro.
+
+Também teve o nosso beijo da chuva um tempinho depois… te olhar toda molhada retocando a maquiagem é o que mais me traz sensação boa, depois a gente ainda viu filme de terror comendo várias coisas, também foi a primeira vez que eu fiz isso com alguém, foi maravilhoso, mas o filme me arrepia até hoje.
+
+Eu te amo muito, muito mesmo, quero ter cada vez mais memórias de lugares únicos que a gente já foi, acho que é por isso que eu odeio que você faça algo comigo que você já fez, não é ciúme ou algo do tipo, é só pra aumentar esse tipo de sentimento que eu sinto quando penso em você :)
+            </p>
+
+            <img class="imagem-mensagem" src="foto1.jpg" alt="Foto do melhor dia 1">
+
+            <img class="imagem-mensagem" src="foto2.jpg" alt="Foto do melhor dia 2">
+
+            <button class="btn-fechar" onclick="fecharMelhorDia()">Fechar</button>
         </div>
     </div>
 
@@ -313,7 +383,9 @@
         <div class="caixa-mensagem">
             <img class="imagem-mensagem" src="foto.jpg2" alt="Nossa foto especial">
 
-            <p class="texto-mensagem">eu sei que você pensa que eu não te amo o tanto quanto antes, ou o tanto que você me ama, mas isso está muito longe da verdade, eu te amo muito garota, com todas as forças que me restam e as forças que eu invento pra parecer forte. Na real eu acho que só tive que amadurecer rápido demais de um dia pro outro, em uma semana eu era um inútil despreocupado com a vida, com a única responsabilidade sendo limpar o quintal e a louça, e do nada, virar um homem de casa, o seu menino, ligando pra tudo, problemas em trabalhos diferentes, várias horas em ônibus pra chegar em casa depois dos pés estarem latejando de tão doloridos. Não pense que eu não gosto de estar contigo ou algo parecido, tem vez que eu só preciso ficar sozinho, jogar um pouco, tirar toda essa energia pesada sabe? eu odeio tratar você mal, do mesmo jeito que eu sei que você odeia, mas eu nem percebo as vezes, só falo e me desculpo depois, mas isso não tira o fato de na minha mente eu ser um bosta por ter feito isso. Esse esforço pra esse site não é nada perto do frio da barriga que eu sinto quando sei que vamos acordar juntos e pedir algo pra comer mais tarde, da sensação que é saber que temos momentos só nossos, da felicidade que eu sinto por ter feito você jogar comigo… Eu te amo mais do que tudo, eu vou me casar com você, e se não for com você eu não vou querer com ninguém, de presente de dia dos namorados, eu quero que você perdoe meus vacilos, que não são poucos, quero que você fique comigo pra sempre, porque eu quero falar que te amo pro resto da minha vida.</p>
+            <p class="texto-mensagem">
+eu sei que você pensa que eu não te amo o tanto quanto antes, ou o tanto que você me ama, mas isso está muito longe da verdade, eu te amo muito garota, com todas as forças que me restam e as forças que eu invento pra parecer forte. Na real eu acho que só tive que amadurecer rápido demais de um dia pro outro, em uma semana eu era um inútil despreocupado com a vida, com a única responsabilidade sendo limpar o quintal e a louça, e do nada, virar um homem de casa, o seu menino, ligando pra tudo, problemas em trabalhos diferentes, várias horas em ônibus pra chegar em casa depois dos pés estarem latejando de tão doloridos. Não pense que eu não gosto de estar contigo ou algo parecido, tem vez que eu só preciso ficar sozinho, jogar um pouco, tirar toda essa energia pesada sabe? eu odeio tratar você mal, do mesmo jeito que eu sei que você odeia, mas eu nem percebo as vezes, só falo e me desculpo depois, mas isso não tira o fato de na minha mente eu ser um bosta por ter feito isso. Esse esforço pra esse site não é nada perto do frio da barriga que eu sinto quando sei que vamos acordar juntos e pedir algo pra comer mais tarde, da sensação que é saber que temos momentos só nossos, da felicidade que eu sinto por ter feito você jogar comigo… Eu te amo mais do que tudo, eu vou me casar com você, e se não for com você eu não vou querer com ninguém, de presente de dia dos namorados, eu quero que você perdoe meus vacilos, que não são poucos, quero que você fique comigo pra sempre, porque eu quero falar que te amo pro resto da minha vida.
+            </p>
 
             <button class="btn-fechar" onclick="fecharMensagem()">Fechar</button>
         </div>
@@ -380,12 +452,47 @@
             document.getElementById('telaCasemiro').style.display = 'none';
         }
 
+        function mostrarGol() {
+            document.getElementById('golCasemiro').style.display = 'block';
+        }
+
+        function abrirMelhorDia() {
+            document.getElementById('telaMelhorDia').style.display = 'block';
+            cairFloresRoxas();
+        }
+
+        function fecharMelhorDia() {
+            document.getElementById('telaMelhorDia').style.display = 'none';
+        }
+
         function abrirMensagem() {
             document.getElementById('mensagemEspecial').style.display = 'block';
         }
 
         function fecharMensagem() {
             document.getElementById('mensagemEspecial').style.display = 'none';
+        }
+
+        function cairFloresRoxas() {
+            const flores = ['✿', '❀', '✾', '❁'];
+
+            for (let i = 0; i < 35; i++) {
+                setTimeout(() => {
+                    const flor = document.createElement('div');
+                    flor.classList.add('flor-roxa');
+                    flor.textContent = flores[Math.floor(Math.random() * flores.length)];
+
+                    flor.style.left = Math.random() * 100 + 'vw';
+                    flor.style.fontSize = Math.random() * 14 + 18 + 'px';
+                    flor.style.animationDuration = Math.random() * 3 + 4 + 's';
+
+                    document.body.appendChild(flor);
+
+                    setTimeout(() => {
+                        flor.remove();
+                    }, 7000);
+                }, i * 120);
+            }
         }
 
         const canvas = document.getElementById('canvasFogos');
