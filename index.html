@@ -158,36 +158,6 @@
             color: #ffffff;
         }
 
-        .btn-ajuda {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            width: 45px;
-            height: 45px;
-            border: none;
-            border-radius: 50%;
-            background-color: #ff4d6d;
-            color: #ffffff;
-            font-size: 24px;
-            font-weight: 700;
-            cursor: pointer;
-            z-index: 9999;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
-            opacity: 0;
-            transform: scale(0.5);
-            transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.2s;
-        }
-
-        .btn-ajuda.aparecer {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .btn-ajuda:hover {
-            background-color: #ff758f;
-            transform: scale(1.1);
-        }
-
         canvas {
             position: absolute;
             top: 0;
@@ -230,14 +200,6 @@
             .container {
                 padding-top: 125px;
             }
-
-            .btn-ajuda {
-                right: 15px;
-                bottom: 15px;
-                width: 40px;
-                height: 40px;
-                font-size: 22px;
-            }
         }
     </style>
 </head>
@@ -266,12 +228,10 @@
             <h1>SURPRESA!</h1>
 
             <div class="grid-botoes">
-                <button class="btn-opcao">História Favorita ❤️</button>
+                <button class="btn-opcao">Dia Mais Importante ❤️</button>
                 <button class="btn-opcao">Melhor Dia ✨</button>
-                <button class="btn-opcao">Em Breve 👀</button>
+                <button class="btn-opcao">...</button>
             </div>
-
-            <button class="btn-ajuda">?</button>
         </div>
     </div>
 
@@ -317,12 +277,6 @@
                     botao.classList.add('aparecer');
                 }, 400 + index * 250);
             });
-
-            const btnAjuda = document.querySelector('.btn-ajuda');
-
-            setTimeout(() => {
-                btnAjuda.classList.add('aparecer');
-            }, 1200);
 
             if (!animandoFogos) {
                 animandoFogos = true;
